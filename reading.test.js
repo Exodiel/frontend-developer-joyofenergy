@@ -1,4 +1,4 @@
-import { getReadings, groupByDay, sortByTime } from "./reading";
+import { getReadings, groupByDay, sortByTime, getConsumption } from "./reading";
 
 describe("#reading", function () {
   describe("#getReadings", () => {
@@ -77,6 +77,79 @@ describe("#reading", function () {
     });
   });
 
+  describe("#getConsumption", () => {
+    it("should return the last 30 days consumption", () => {
+
+      // arrange
+      const readings = [
+        { time: new Date(2021, 12, 17, 10, 24).getTime(), value: 50 },
+        {
+          time: new Date(2021, 12, 16, 9, 24).getTime(),
+          value: 40,
+        },
+        {
+          time: new Date(2021, 12, 15, 11, 34).getTime(),
+          value: 35,
+        },
+        {
+          time: new Date(2021, 12, 14, 11, 34).getTime(),
+          value: 25,
+        },
+        {
+          time: new Date(2021, 12, 13, 11, 34).getTime(),
+          value: 25,
+        },    
+        {
+          time: new Date(2021, 12, 12, 11, 34).getTime(),
+          value: 25,
+        },                
+      ];
+
+      //act
+      const expectedConsumpition = 17;
+      const consumpiton = getConsumption(readings, 3);
+
+      //assert
+      expect(expectedConsumpition).toBe(consumpiton);
+    });
+
+    it("should return the last 30 days consumption given a no-sort list", () => {
+
+      // arrange
+      const readings = [
+        {
+          time: new Date(2021, 12, 15, 11, 34).getTime(),
+          value: 35,
+        },
+        {
+          time: new Date(2021, 12, 14, 11, 34).getTime(),
+          value: 25,
+        }, 
+        {
+          time: new Date(2021, 12, 13, 11, 34).getTime(),
+          value: 25,
+        },    
+        {
+          time: new Date(2021, 12, 12, 11, 34).getTime(),
+          value: 25,
+        },                    
+        { time: new Date(2021, 12, 17, 10, 24).getTime(), value: 50 },
+        {
+          time: new Date(2021, 12, 16, 9, 24).getTime(),
+          value: 40,
+        }
+
+      ];
+
+      //act
+      const expectedConsumpition = 17;
+      const consumpiton = getConsumption(readings, 3);
+
+      //assert
+      expect(expectedConsumpition).toBe(consumpiton);
+
+    });
+  });
   describe("#sortByTime", () => {
     it("should put latest reading to the last", () => {
       const readings = [

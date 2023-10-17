@@ -31,3 +31,15 @@ export const sortByTime = (readings) => {
     (readingA, readingB) => readingA.time - readingB.time
   );
 };
+
+export const getConsumption = (readings, daysNumberToTake) => {
+  let sum = 0;
+  const orderedReadings = sortByTime(readings).reverse()
+  orderedReadings.forEach((element, index) => {
+    if (index < daysNumberToTake) {
+      sum += element.value
+    }
+  });
+
+  return Math.round(sum * 0.138)
+}
